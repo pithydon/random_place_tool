@@ -4,14 +4,13 @@ minetest.register_tool("random_place_tool:random_place_tool", {
 	wield_image = "random_place_tool.png",
 	on_place = function(itemstack, placer, pointed_thing)
 		local inv = placer:get_inventory()
-		local wield_index = placer:get_wield_index()
 		local items = {}
 		for i=1,8 do
-			if wield_index ~= i then
-				local itemstack = inv:get_stack("main", i)
+			local itemstack = inv:get_stack("main", i)
+			if not itemstack:is_empty() then
 				local name = itemstack:get_name()
 				local item = minetest.registered_items[name]
-				if not itemstack:is_empty() and item then
+				if name ~= "random_place_tool:random_place_tool" and item then
 					table.insert(items, {itemstack, item.on_place, i})
 				end
 			end
